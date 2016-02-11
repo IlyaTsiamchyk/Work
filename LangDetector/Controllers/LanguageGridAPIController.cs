@@ -1,9 +1,6 @@
 ﻿using System;
 using LangDetector.Models;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Data.SQLite;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -38,20 +35,14 @@ namespace LangDetector.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string JSonString = serializer.Serialize(_gridModel);
 
-            Models.SQLiteContext context = new Models.SQLiteContext();
+            SQLiteContext context = new SQLiteContext();
+
             //Parametrized query.
-            string queryString = "INSERT INTO Requests(UserId, QueryString, QueryResult) VALUES ('@id', '@requestWord', '@JSonString');";
-
-            //Add params.
-            //TODO: Move it to model.
-            SQLiteCommand _cmd = new SQLiteCommand(queryString);
-            _cmd.Parameters.Add(new SQLiteParameter("@id", SqlDbType.VarChar) { Value = id });
-            _cmd.Parameters.Add(new SQLiteParameter("@requestWord", SqlDbType.VarChar) { Value = requestWord });
-            _cmd.Parameters.Add(new SQLiteParameter("@JSonString", SqlDbType.VarChar) { Value = JSonString });
-
+            string queryString = "INSERT INTO Requests(UserId, QueryString, QueryResult) VALUES (?, ?, ?);";
+            
             try
             {
-                context.ExecuteQuery(_cmd);
+                context.ExecuteQuery(queryString, id, requestWord, JSonString);
                 return Request.CreateResponse(HttpStatusCode.Created, _gridModel);
             }
             catch (Exception e)
