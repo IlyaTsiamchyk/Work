@@ -26,20 +26,30 @@ function getLanguageGrid(id, text, selectorForGrid) {
         dataType: "json",
         contentType: "application/json",
 
-        success: function (data, textStatus, xhr) {
-            var str = "";
-            //Создание таблицы для bootstrap.
-            for (var i = 0, dataLn = data.length; i < dataLn; i++) {
-                str = str + "<div class='row'>";
-                str = str + "<div class = 'col-md-4'><p>"
-                        + data[i].Language + "</p></div>";
-                str = str + "<div class = 'col-md-4'><p>"
-                        + data[i].ChanceOfLanguage + "%</p></div>";
-                str = str + "</div>";
+        statusCode: {
+            500: function (data) {
+                //fillPopup(data, selectorForGrid); 
+                $(selectorForGrid).html("<p>Server error.</p>");
             }
-            $(selectorForGrid).html(str);
-        }
+        },
+
+        success: function(data) { fillPopup(data, selectorForGrid); }
     });
+}
+
+//Fill the bootstrap table by data value.
+function fillPopup(data, selectorForGrid) {
+    var str = "";
+    //Создание таблицы для bootstrap.
+    for (var i = 0, dataLn = data.length; i < dataLn; i++) {
+        str = str + "<div class='row'>";
+        str = str + "<div class = 'col-md-4'><p>"
+                + data[i].Language + "</p></div>";
+        str = str + "<div class = 'col-md-4'><p>"
+                + data[i].ChanceOfLanguage + "%</p></div>";
+        str = str + "</div>";
+    }
+    $(selectorForGrid).html(str);
 }
 
 // Создание тултипа.
