@@ -1,0 +1,75 @@
+﻿@model IEnumerable<LangDetector.Models.ComparableGridModel>
+
+<h2>Lang detector</h2>
+<h2>@ViewBag.Test</h2>
+
+@Html.TextBox("Word", htmlAttributes: new { id = "text" }, value: "")
+<button id="button" value="RESTrequest" type="button">Found out the language</button>
+
+<!-- div с возможностью пользовательского ввода.-->
+<div contenteditable="true" id="edit">
+    It's соntenteditable. You can write right here.
+</div>
+
+<!-- Открыть закрыть pop up. -->
+<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Последний запрос</button>
+
+<!-- Pop up окно -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Pop up content-->
+        <div class="modal-content">
+            <!--Заголовок.-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="langGridHeader"></h4>
+            </div>
+            <!-- Тело для popup.-->
+            <div class="modal-body">
+                <p id="langGridContent"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/UserScripts/AsyncAPIGridCall.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#button").on("click", function () {
+                getLanguageGrid('@ViewBag.UserId', $("#text").val(), "#langGridContent");
+            });
+
+            //Popup
+            $("#edit").on("click", function () {
+                //Найти выбранное слово.
+                var sn = getSelectedWordByClick();
+
+                //Если длина выбранного слова меньше 4 символов, то ничего не делать.
+                if (sn.length < 4) {
+                    return;
+                }
+                $("#langGridHeader").html("Поиск языка для слова " + sn);
+                $("#langGridContent").html("Подождите, оглянитесь вокруг, жизнь полна позитивных моментов.");
+
+                //Отпавить REST запрос на сервер.
+                getLanguageGrid('@ViewBag.UserId', sn, "#langGridContent");
+
+                //Увеличить количество запросов для пользователя.
+                increaseAmountOfQueries('@ViewBag.UserId');
+
+                //Показать popup.
+                $("#myModal").modal();
+            });
+
+            //Tooltip
+            var edit = document.getElementById("edit");
+            edit.onmousemove = mouseMoveHandler;
+            edit.onmouseleave = mouseOutHandler;
+        });
+    </script>
+}
