@@ -46,13 +46,18 @@ namespace LangDetector.Models
             }
         }
 
-        public void ExecuteQuery(SQLiteCommand cmd)
+        public void ExecuteQuery(string queryString, params string[] cmdParams)
         {
             using (_con)
             {
                 _con.Open();
-                cmd.Connection = _con;
-                cmd.ExecuteNonQuery();
+                _sqlCmd = _con.CreateCommand();
+                _sqlCmd.CommandText = queryString;
+                foreach (var cmdParam in cmdParams)
+                {
+                    _sqlCmd.Parameters.Add(new SQLiteParameter(cmdParam));
+                }
+                _sqlCmd.ExecuteNonQuery();
                 _con.Close();
             }
         }
@@ -119,7 +124,7 @@ namespace LangDetector.Models
                 command = new SQLiteCommand(sqlCreateTable, con);
                 command.ExecuteNonQuery();
 
-                sqlCreateTable = @"CREATE TABLE Requests(Id integer primary key, UserId varchar(128), QueryResult varchar, QueryString varchars);";
+                sqlCreateTable = @"CREATE TABLE Requests(Id integer primary key, UserId varchar(128), QueryResult varchar, QueryString varchar);";
                 command = new SQLiteCommand(sqlCreateTable, con);
                 command.ExecuteNonQuery();
 
