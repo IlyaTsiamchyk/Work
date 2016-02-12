@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDALContext.cs" />
+    <Compile Include="IRequestRepository.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="RequestInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,7 +16,7 @@ namespace LangDetector.Controllers
             SQLiteContext context = new SQLiteContext();
 
             string queryString = $@"Update RequestsInfo Set amountOfQueries = amountOfQueries+1, lastLoginDateTime='{DateTime.Now}'
-                                    Where id='{id}';";
+                                    Where UserId='{id}';";
 
             context.ExecuteQuery(queryString);
         }

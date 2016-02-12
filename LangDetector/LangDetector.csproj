@@ -189,10 +189,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DALContext.cs" />
     <Compile Include="Models\DBInitializer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LangDetector.cs" />
     <Compile Include="Models\Language.cs" />
+    <Compile Include="Models\RequestRepository.cs" />
     <Compile Include="Models\SQLiteContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

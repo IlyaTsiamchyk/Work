@@ -83,7 +83,7 @@ namespace LangDetector.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("InsertRowAboutNewUserIntoRequestsInfoAsync", "Home");
+                    return RedirectToAction("CreateRequest", "Home");
                 }
                 else
                 {

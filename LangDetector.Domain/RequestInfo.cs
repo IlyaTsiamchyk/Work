@@ -10,7 +10,7 @@ namespace LangDetector.Domain
         [Key]
         public string UserId { get; set; }
         public int AmountOfQueries { get; set; }
-        public DateTime RegisterDateTime { get; set; }
-        public DateTime LastLoginDateTime { get; set; }
+        public string RegisterDateTime { get; set; }
+        public string LastLoginDateTime { get; set; }
     }
 }
