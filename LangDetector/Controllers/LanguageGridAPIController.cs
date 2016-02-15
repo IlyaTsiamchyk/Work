@@ -3,8 +3,10 @@ using LangDetector.Models;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using System.Web.Security.AntiXss;
 
 namespace LangDetector.Controllers
 {
@@ -22,6 +24,9 @@ namespace LangDetector.Controllers
         [HttpPost]
         public HttpResponseMessage LanguageGrid([FromUri]string id, [FromBody]string requestWord)
         {
+            id = HttpUtility.HtmlEncode(id);
+            requestWord = HttpUtility.HtmlEncode(requestWord);
+
             if (string.IsNullOrEmpty(requestWord)) return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             foreach (Language language in _languages)
