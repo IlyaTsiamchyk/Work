@@ -52,8 +52,8 @@
                 if (sn.length < 4) {
                     return;
                 }
-                $("#langGridHeader").html("Поиск языка для слова " + sn);
-                $("#langGridContent").html("Подождите, оглянитесь вокруг, жизнь полна позитивных моментов.");
+                $("#langGridHeader").text("Поиск языка для слова " + sn);
+                $("#langGridContent").text("Подождите, оглянитесь вокруг, жизнь полна позитивных моментов.");
 
                 //Отпавить REST запрос на сервер.
                 getLanguageGrid('@ViewBag.UserId', sn, "#langGridContent");
